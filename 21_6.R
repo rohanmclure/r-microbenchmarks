@@ -18,7 +18,7 @@ matrix_bench <- function()
 	#A <- data[1]
 	#b <- data[2]
 
-	A <- matrix(c(10,4,-6,3),2)
+	#A <- matrix(c(10,4,-6,3),2)
 
 	print(solve(A))
 }
@@ -39,15 +39,23 @@ get_data <- function(name)
 }
 
 rand_data <- function(is_matrix, slength)
-{
-	members = slength
+{	
+	n = slength
 	
 	if (is_matrix)
 	{
-		members *= members
+		n <- n ** 2
+	}
+	
+	members <- c()
+	
+	# Generates a line of members for the matrix.
+	for (i in 1:n)
+	{
+		members[i] <- sample(-10:10)
 	}
 
-
+	return( matrix(members), slength )
 }
 
 matrix_bench()
