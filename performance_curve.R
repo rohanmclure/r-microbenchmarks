@@ -1,10 +1,6 @@
 # Rohan McLure
 # Matrix algebra 
 
-# Global time variable.
-Time <- Sys.time()
-
-
 # tests is the size of the data being input.
 # samplesize is the number of trials allocated to each load size.
 benchmark <- function(testsizes, nsamples)
@@ -18,8 +14,10 @@ benchmark <- function(testsizes, nsamples)
 		for (trial in 1:nsamples)
 		{
 			# Populates the entry for an input size with its trial time.
-			dataset[trial] <- divisibility_bench(testsizes[i])
+			dataset[trial] <- matrix_multiplication_bench(testsizes[i])
 		}
+
+		print(dataset)
 	
 		samplemeans[i] <- mean(dataset)
 	}
@@ -30,16 +28,24 @@ benchmark <- function(testsizes, nsamples)
 }
 
 # Generates matrix A and vector b, solves for X = Ab, barplot contents of X.
-matrix_bench <- function(size)
+matrix_arithmetic_bench <- function(size)
 {
-	A = rand_matrix(TRUE, size)
-	b = rand_matrix(FALSE, size)
-
-	# Excludes generation time from 
-	module_time()
+	A <- rand_matrix(TRUE, size)
+	b <- rand_matrix(FALSE, size)
 
 	# Solves matrix, plots contents of variable vector X.
-	return system.time(X <- solve(A,b); barplot(1:length(X),X))
+	dt <- system.time(X <- solve(A,b))[3]
+	dt <- dt + system.time(barplot(1:length(X),X))[3]
+	return (dt)
+}
+
+# Multiplies matrices A and B
+matrix_multiplication_bench <- function(size)
+{
+	A <- rand_matrix(TRUE, size)
+	B <- rand_matrix(TRUE, size)
+
+	return (system.time(A %*% B)[3])
 }
 
 rand_matrix <- function(is_matrix, slength)
@@ -62,8 +68,8 @@ divisibility_bench <- function(size)
 	data <- sample(-100:100, size, replace=TRUE)
 	moduli <- sample(1:10, size, replace=TRUE)
 
-	return (system.time(data %% moduli))
+	return (system.time(data %% moduli)[3])
 }
 
 
-benchmark(50000*1:20, 10)
+benchmark(50*1:20, 10)
