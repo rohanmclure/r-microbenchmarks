@@ -72,4 +72,4 @@ divisibility_bench <- function(size)
 }
 
 
-benchmark(50*1:20, 10)
+benchmark(50*10:30, 2)
