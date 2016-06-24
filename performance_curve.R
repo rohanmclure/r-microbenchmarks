@@ -18,14 +18,14 @@ benchmark <- function(testsizes, nsamples)
 		for (trial in 1:nsamples)
 		{
 			# Populates the entry for an input size with its trial time.
-			dataset[trial] <- matrix_bench(testsizes[i])
+			dataset[trial] <- divisibility_bench(testsizes[i])
 		}
 	
 		samplemeans[i] <- mean(dataset)
 	}
 
 	pdf(file="performance_curve.pdf")
-	plot(testsizes, samplemeans,xlabel="Input Size",ylabel="Computation Time (s)")
+	plot(testsizes,samplemeans)
 
 }
 
@@ -61,6 +61,21 @@ rand_matrix <- function(is_matrix, slength)
 	return( matrix((members), nrow=slength ))
 }
 
+divisibility_bench <- function(size)
+{
+	data <- sample(-100:100, size, replace=TRUE)
+	moduli <- sample(1:10, size, replace=TRUE)
+
+	# Excludes generation time.
+	module_time()
+
+	data %% moduli
+
+	return(module_time())
+}
+
+
+
 # Returns dt for the last time this function was called, assigns time to global variable.
 module_time <- function()
 {
@@ -69,4 +84,4 @@ module_time <- function()
 	return(dt)
 }
 
-benchmark(50*1:20, 10)
+benchmark(50000*1:20, 10)
