@@ -13,8 +13,6 @@
 # Affine transformation matrices, solves.
 matrix_bench <- function()
 {
-	data <- rand_data(10000)
-
 	print(solve(data))
 }
 
@@ -27,18 +25,13 @@ read_file <- function(matrix, vector)
 	return( A )
 }
 
-get_data <- function(name)
+rand_matrix <- function(name)
 {
 	# Read.Table returns list on white-space
 	return(read.table( paste(getwd(), name, sep = '/')) )
 }
 
-rand_data <- function(slength)
-{
-	return(rand_data(TRUE, slength))
-}
-
-rand_data <- function(is_matrix, slength)
+rand_matrix <- function(is_matrix, slength)
 {	
 	n = slength
 	
@@ -47,15 +40,12 @@ rand_data <- function(is_matrix, slength)
 		n <- n ** 2
 	}
 	
-	members <- c()
-	
 	# Generates a line of members for the matrix.
-	for (i in 1:n)
-	{
-		members[i] <- sample(-10:10)
-	}
+	members <- sample(-10:10, n)
 
-	return( matrix(members), slength )
+	print("Ermagersh it werkhs")
+
+	return( matrix((members), slength ))
 }
 
 matrix_bench()
