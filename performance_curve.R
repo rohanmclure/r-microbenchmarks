@@ -24,8 +24,8 @@ benchmark <- function(testsizes, nsamples)
 		samplemeans[i] <- mean(dataset)
 	}
 
-	#png()
-	plot(testsizes, samplemeans)
+	pdf(file="performance_curve.pdf")
+	plot(testsizes, samplemeans,xlabel="Input Size",ylabel="Computation Time (s)")
 
 }
 
@@ -40,7 +40,7 @@ matrix_bench <- function(size)
 
 	# Solves matrix, plots contents of variable vector X.
 	X <- solve(A,b)
-	barplot(X)
+	barplot(1:length(X),X)
 
 	# Removing overhead, computation time for solve and plot.
 	return(module_time())
@@ -61,7 +61,7 @@ rand_matrix <- function(is_matrix, slength)
 	return( matrix((members), nrow=slength ))
 }
 
-# 
+# Returns dt for the last time this function was called, assigns time to global variable.
 module_time <- function()
 {
 	dt <- Sys.time() - Time
@@ -69,4 +69,4 @@ module_time <- function()
 	return(dt)
 }
 
-benchmark(2**(1:10), 10)
+benchmark(50*1:20, 10)
