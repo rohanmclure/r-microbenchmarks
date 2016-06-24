@@ -39,11 +39,7 @@ matrix_bench <- function(size)
 	module_time()
 
 	# Solves matrix, plots contents of variable vector X.
-	X <- solve(A,b)
-	barplot(1:length(X),X)
-
-	# Removing overhead, computation time for solve and plot.
-	return(module_time())
+	return system.time(X <- solve(A,b); barplot(1:length(X),X))
 }
 
 rand_matrix <- function(is_matrix, slength)
@@ -66,22 +62,8 @@ divisibility_bench <- function(size)
 	data <- sample(-100:100, size, replace=TRUE)
 	moduli <- sample(1:10, size, replace=TRUE)
 
-	# Excludes generation time.
-	module_time()
-
-	data %% moduli
-
-	return(module_time())
+	return (system.time(data %% moduli))
 }
 
-
-
-# Returns dt for the last time this function was called, assigns time to global variable.
-module_time <- function()
-{
-	dt <- Sys.time() - Time
-	Time <- Time + dt
-	return(dt)
-}
 
 benchmark(50000*1:20, 10)
