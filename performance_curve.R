@@ -14,7 +14,7 @@ benchmark <- function(testsizes, nsamples)
 		for (trial in 1:nsamples)
 		{
 			# Populates the entry for an input size with its trial time.
-			dataset[trial] <- matrix_multiplication_bench(testsizes[i])
+			dataset[trial] <- divisibility_bench(testsizes[i])
 		}
 
 		print(dataset)
@@ -71,5 +71,25 @@ divisibility_bench <- function(size)
 	return (system.time(data %% moduli)[3])
 }
 
+incrementation_bench <- function(size)
+{
+	# Vector of 0's of amount size.
+	data <- rep(0,size)
 
-benchmark(50*10:30, 2)
+	return (system.time(data <- data + 1))
+}
+
+vector_column_synthesis_bench <- function(size)
+{
+	vectors <- c()	
+
+	for (i in 1:size)
+	{
+		vectors[i] <- rand_matrix(FALSE, size)
+	}
+
+	return (system.time(cbind(vectors)))
+}
+
+
+benchmark(500000*10:30, 2)
