@@ -90,37 +90,44 @@ multiplication_bench <- function(size)
 	return(system.time(operand * data)[1])
 }
 
-logic_bench <- function() {}
+logic_bench <- function(size)
+{
+	data <- (sample(0:1, size,replace=TRUE) %% 2)
+	
+}
 
 #
-vector_column_synthesis_bench <- function(size)
-{
-	vectors <- c()	
-
-	for (i in 1:size)
-	{
-		vectors[i] <- rand_matrix(FALSE, size)
-	}
-
-	return (system.time(cbind(vectors))[1])
-}
+#vector_column_synthesis_bench <- function(size)
+#{
+#	vectors <- c()	
+#
+#	for (i in 1:size)
+#	{
+#		vectors[i] <- rand_matrix(FALSE, size)
+#	}
+#
+#	return (system.time(cbind(vectors))[1])
+#}
 
 # 5000000*15:25
 significant_bench <- function(size)
 {
 	data <- runif(size, -10.0,10.0)
-	sf <- sample(1:16, size, replace=TRUE)
+	sf <- sample(1:8, size, replace=TRUE)
 
 	return(system.time(round(data,sf))[1])
 }
 
-# Program loop:
+# Function calls:
 
+aggregate <- 0.0
 
-
-
-
-
-
+# Allow tests to range 0.1 to 0.2 on Intel
+aggregate <- aggregate + benchmark(multiplication_bench, 5000000*6:14, 1)
+aggregate <- aggregate + benchmark(significant_bench, 100000*14:28, 1)
+aggregate <- aggregate + benchmark(matrix_arithmetic_bench, 60*10:15, 1)
+aggregate <- aggregate + benchmark(incrementation_bench, 5000000*8:23, 1)
+aggregate <- aggregate + benchmark(matrix_multiplication_bench, 6*87:98, 1)
+aggregate <- aggregate + benchmark(divisibility_bench, 1000000*8:16, 1)
 
 
