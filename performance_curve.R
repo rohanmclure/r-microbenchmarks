@@ -16,7 +16,7 @@ benchmark <- function(testsizes, nsamples)
 		for (trial in 1:nsamples)
 		{
 			# Populates the entry for an input size with its trial time.
-			dataset[trial] <- do.call(divisibility_bench,(testsizes[i])
+			dataset[trial] <- do.call("divisibility_bench",list(testsizes[i]))
 		}
 
 		print(dataset)
@@ -74,6 +74,7 @@ divisibility_bench <- function(size)
 	return (system.time(data %% moduli)[1])
 }
 
+# Reasonable test data:
 incrementation_bench <- function(size)
 {
 	# Vector of 0's of amount size.
