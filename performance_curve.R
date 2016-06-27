@@ -5,6 +5,7 @@
 # samplesize is the number of trials allocated to each load size.
 benchmark <- function(test, testsizes, nsamples)
 {
+	
 	samplemeans <- c()
 
 	for (i in 1:length(testsizes))
@@ -122,6 +123,22 @@ significant_bench <- function(size)
 
 aggregate <- 0.0
 
+# Data sets:
+datasets <- c(5000000*6:14,100000*14:28,60*10:15,5000000*8:23,6*87:98,1000000*8:16)
+
+# Benchmarks:
+tests <- c("multiplication_bench","significant_bench","matrix_arithmetic_bench","incrementation_bench","matrix_multiplication_bench","divisibility_bench")
+
+for (i in 1:length(tests))
+{
+	current_test <- tests[i]
+	print(current_test)
+
+	# Prints the mean team for 10 samples of each benchmark.
+	# The data given is the central or 'median' size range as per Intel Control.
+	print(names(current_test), benchmark(names(current_test), median(datasets[i]), 10))
+}
+
 # Allow tests to range 0.1 to 0.2 on Intel
 aggregate <- aggregate + benchmark(multiplication_bench, 5000000*6:14, 1)
 aggregate <- aggregate + benchmark(significant_bench, 100000*14:28, 1)
@@ -129,5 +146,7 @@ aggregate <- aggregate + benchmark(matrix_arithmetic_bench, 60*10:15, 1)
 aggregate <- aggregate + benchmark(incrementation_bench, 5000000*8:23, 1)
 aggregate <- aggregate + benchmark(matrix_multiplication_bench, 6*87:98, 1)
 aggregate <- aggregate + benchmark(divisibility_bench, 1000000*8:16, 1)
+
+print (sprintf("Aggregate score is %d", aggregate))
 
 
