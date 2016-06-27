@@ -1,11 +1,9 @@
 # Rohan McLure
-# Matrix algebra 
+
 
 # tests is the size of the data being input.
 # samplesize is the number of trials allocated to each load size.
-
-
-benchmark <- function(testsizes, nsamples)
+benchmark <- function(test, testsizes, nsamples)
 {
 	samplemeans <- c()
 
@@ -16,7 +14,7 @@ benchmark <- function(testsizes, nsamples)
 		for (trial in 1:nsamples)
 		{
 			# Populates the entry for an input size with its trial time.
-			dataset[trial] <- do.call("divisibility_bench",list(testsizes[i]))
+			dataset[trial] <- do.call(test,list(testsizes[i]))
 		}
 
 		print(dataset)
@@ -74,7 +72,7 @@ divisibility_bench <- function(size)
 	return (system.time(data %% moduli)[1])
 }
 
-# Reasonable test data:
+# Reasonable test data: 5000000*30:50
 incrementation_bench <- function(size)
 {
 	# Vector of 0's of amount size.
@@ -83,6 +81,18 @@ incrementation_bench <- function(size)
 	return (system.time(data <- data + 1)[1])
 }
 
+# 5000000*30:50
+multiplication_bench <- function(size)
+{
+	data <- sample(-100:100, size, replace=TRUE)
+	operand <- sample(-40:40)
+
+	return(system.time(operand * data)[1])
+}
+
+logic_bench <- function() {}
+
+#
 vector_column_synthesis_bench <- function(size)
 {
 	vectors <- c()	
@@ -95,5 +105,22 @@ vector_column_synthesis_bench <- function(size)
 	return (system.time(cbind(vectors))[1])
 }
 
+# 5000000*15:25
+significant_bench <- function(size)
+{
+	data <- runif(size, -10.0,10.0)
+	sf <- sample(1:16, size, replace=TRUE)
 
-benchmark(5000000*30:50, 1)
+	return(system.time(round(data,sf))[1])
+}
+
+# Program loop:
+
+
+
+
+
+
+
+
+
