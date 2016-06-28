@@ -127,7 +127,7 @@ get_median_data <- function()
 list("significant_bench",100000*14:28),
 list("matrix_arithmetic_bench",60*10:15),
 list("incrementation_bench",5000000*8:23),
-list("matrix_multiplication_bench",6*87:98),
+list("matrix_multiplication_bench",1825),
 list("divisibility_bench",1000000*8:16))
 
 	for (i in 1:length(tests))
@@ -148,9 +148,12 @@ list("divisibility_bench",1000000*8:16))
 	return(mediantime)
 }
 
-aggregate <- sum(get_median_data())
 
-cat(sprintf("Aggregate score is %.3f\n (s)", aggregate))
+# Returun aggregate test data as the sum of all central values.
+#aggregate <- sum(get_median_data())
+#cat(sprintf("Aggregate score is %.3f\n (s)", aggregate))
+
+benchmark(matrix_arithmetic_bench,3000,5)
 
 
 
