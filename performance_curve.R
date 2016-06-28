@@ -20,9 +20,11 @@ benchmark <- function(test, testsizes, nsamples)
 		samplemeans[i] <- mean(dataset)
 	}
 
-	pdf(file="performance_curve.pdf")
-	plot(testsizes,samplemeans)
-
+	#pdf(file="performance_curve.pdf")
+	#plot(testsizes,samplemeans)
+	
+	# For use in calculating aggregate data, only the median value of 'testsizes' is deployed, return numeric not vector.
+	return (samplemeans[1])
 }
 
 # Generates matrix A and vector b, solves for X = Ab, barplot contents of X.
@@ -118,6 +120,8 @@ significant_bench <- function(size)
 
 get_median_data <- function()
 {
+	mediantime <- c()
+
 	# Benchmarks:
 	tests <- list(list("multiplication_bench",5000000*6:14),
 list("significant_bench",100000*14:28),
@@ -131,37 +135,22 @@ list("divisibility_bench",1000000*8:16))
 		name <- tests[[i]][[1]] 
 		data <- tests[[i]][[2]]
 
-		print(name)
-		print(data)
 
 		# Prints the mean team for 10 samples of each benchmark.
 		# The data given is the central or 'median' size range as per Intel Control.
-
 		result = benchmark(name, median(data), 10)
 
 		cat(sprintf("Test \"%s\" has a central average performance:\t%.3f\n", name, result))
+
+		mediantime[i] <- result
 	}
+
+	return(mediantime)
 }
 
-# Function calls:
-get_aggregate_data <- function()
-{
-	aggregate <- 0.0
+aggregate <- sum(get_median_data())
 
-	# Allow tests to range 0.1 to 0.2 on Intel
-	aggregate <- aggregate + benchmark(multiplication_bench, 5000000*6:14, 1)
-	aggregate <- aggregate + benchmark(significant_bench, 100000*14:28, 1)
-	aggregate <- aggregate + benchmark(matrix_arithmetic_bench, 60*10:15, 1)
-	aggregate <- aggregate + benchmark(incrementation_bench, 5000000*8:23, 1)
-	aggregate <- aggregate + benchmark(matrix_multiplication_bench, 6*87:98, 1)
-	aggregate <- aggregate + benchmark(divisibility_bench, 1000000*8:16, 1)
-}
-
-#benchmark(matrix_arithmetic_bench, median(60*10:15), 1)
-
-get_median_data()
-
-cat(sprintf("Aggregate score is %.3f\n", aggregate))
+cat(sprintf("Aggregate score is %.3f\n (s)", aggregate))
 
 
 
