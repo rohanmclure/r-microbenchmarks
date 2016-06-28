@@ -125,7 +125,7 @@ get_median_data <- function()
 	# Benchmarks:
 	tests <- list(list("multiplication_bench",5000000*6:14),
 list("significant_bench",100000*14:28),
-list("matrix_arithmetic_bench",60*10:15),
+list("matrix_arithmetic_bench",2750),
 list("incrementation_bench",5000000*8:23),
 list("matrix_multiplication_bench",1825),
 list("divisibility_bench",1000000*8:16))
@@ -153,7 +153,7 @@ list("divisibility_bench",1000000*8:16))
 #aggregate <- sum(get_median_data())
 #cat(sprintf("Aggregate score is %.3f\n (s)", aggregate))
 
-benchmark(matrix_arithmetic_bench,3000,5)
+benchmark(matrix_arithmetic_bench,,5)
 
 
 
