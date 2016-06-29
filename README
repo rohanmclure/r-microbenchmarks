@@ -1,1 +1,3 @@
 Copyright (c) Rohan McLure 2016
+
+Tests the performance of R on a range of machines, generating random data sets and using R native user-time measurements for performance under solving and multiplying matrices, checking divisbility and rounding to a certain amount of significant figures.
