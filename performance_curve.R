@@ -132,7 +132,7 @@ list("divisibility_bench",1000000*8:16))
 
 	for (i in 1:length(tests))
 	{
-		name <- tests[[i]][[1]] 
+		name <- tests[[i]][[1]]
 		data <- tests[[i]][[2]]
 
 
@@ -152,10 +152,6 @@ list("divisibility_bench",1000000*8:16))
 # Returun aggregate test data as the sum of all central values.
 #aggregate <- sum(get_median_data())
 #cat(sprintf("Aggregate score is %.3f\n (s)", aggregate))
-
-benchmark(matrix_arithmetic_bench,,5)
-
-
 
 
 
