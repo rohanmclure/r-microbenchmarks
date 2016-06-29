@@ -33,8 +33,8 @@ matrix_arithmetic_bench <- function(size)
 	A <- rand_matrix(TRUE, size)
 	b <- rand_matrix(FALSE, size)
 
-	# Solves matrix, plots contents of variable vector X.
-	return(system.time(X <- solve(A,b))[1])
+	# Solves matrix
+	return(system.time(solve(A,b))[1])
 }
 
 # Multiplies matrices A and B
@@ -61,13 +61,34 @@ rand_matrix <- function(is_matrix, slength)
 	return( matrix((members), nrow=slength ))
 }
 
+list_cycle <- function(data)
+{
+	n <- length(data)
+	i <- 0
+	first <- data[1]
+	while (i < n)
+	{
+		data[i] <- data[i+1]
+		i <- i + 1
+	}
+	data[n] <- first
+}
+
 # Reasonable test data: 5000000*30:50
 divisibility_bench <- function(size)
 {
 	data <- sample(-100:100, size, replace=TRUE)
 	moduli <- sample(1:10, size, replace=TRUE)
 
-	return (system.time(data %% moduli)[1])
+	# Calculates the divisibility of ten different moduli for each item in data.
+	total <- 0.0
+	for (n in 1:10)
+	{
+		moduli <- list_cycle(size)
+		total <- total + system.time(data %% moduli)
+	}
+
+	return(total)
 }
 
 # Reasonable test data: 5000000*30:50
@@ -76,7 +97,7 @@ incrementation_bench <- function(size)
 	# Vector of 0's of amount size.
 	data <- rep(0,size)
 
-	return (system.time(data <- data + 1)[1])
+	total <- system.time(data <- data + 1)[1]
 }
 
 # 5000000*30:50
@@ -173,7 +194,7 @@ list("significant_bench",100000*14:28),
 list("matrix_arithmetic_bench",2750),
 list("incrementation_bench",5000000*8:23),
 list("matrix_multiplication_bench",1825),
-list("divisibility_bench",1000000*8:16),
+list("divisibility_bench",50000000),
 list("barplot_bench", 2400000),
 list("unsorted_linear_search",100000000))
 
@@ -198,5 +219,3 @@ list("unsorted_linear_search",100000000))
 # Returun aggregate test data as the sum of all central values.
 #aggregate <- sum(get_median_data())
 #cat(sprintf("Aggregate score is %.3fs \n", aggregate))
-
-benchmark("multiplication_bench",10,10)
