@@ -22,7 +22,7 @@ benchmark <- function(test, testsizes, nsamples)
 
 	#pdf(file="performance_curve.pdf")
 	#plot(testsizes,samplemeans)
-	
+
 	# For use in calculating aggregate data, only the median value of 'testsizes' is deployed, return numeric not vector.
 	return (samplemeans[1])
 }
@@ -34,9 +34,7 @@ matrix_arithmetic_bench <- function(size)
 	b <- rand_matrix(FALSE, size)
 
 	# Solves matrix, plots contents of variable vector X.
-	dt <- system.time(X <- solve(A,b))[1]
-	dt <- dt + system.time(barplot(1:length(X),X))[1]
-	return (dt)
+	return(system.time(X <- solve(A,b))[1])
 }
 
 # Multiplies matrices A and B
@@ -49,7 +47,7 @@ matrix_multiplication_bench <- function(size)
 }
 
 rand_matrix <- function(is_matrix, slength)
-{	
+{
 	n = slength
 
 	if (is_matrix)
@@ -90,16 +88,16 @@ multiplication_bench <- function(size)
 	return(system.time(operand * data)[1])
 }
 
-logic_bench <- function(size)
-{
-	data <- (sample(0:1, size,replace=TRUE) %% 2)
-	
-}
+#logic_bench <- function(size)
+#{
+#	data <- (sample(0:1, size,replace=TRUE) %% 2)
+#
+#}
 
 #
 #vector_column_synthesis_bench <- function(size)
 #{
-#	vectors <- c()	
+#	vectors <- c()
 #
 #	for (i in 1:size)
 #	{
@@ -108,6 +106,13 @@ logic_bench <- function(size)
 #
 #	return (system.time(cbind(vectors))[1])
 #}
+
+barplot_bench <- function(size)
+{
+	data <- sample(1:100, size, replace=TRUE)
+
+	return (system.time(barplot(data))[1])
+}
 
 # 5000000*15:25
 significant_bench <- function(size)
@@ -128,7 +133,8 @@ list("significant_bench",100000*14:28),
 list("matrix_arithmetic_bench",2750),
 list("incrementation_bench",5000000*8:23),
 list("matrix_multiplication_bench",1825),
-list("divisibility_bench",1000000*8:16))
+list("divisibility_bench",1000000*8:16),
+list("barplot_bench", 2400000))
 
 	for (i in 1:length(tests))
 	{
@@ -150,9 +156,8 @@ list("divisibility_bench",1000000*8:16))
 
 
 # Returun aggregate test data as the sum of all central values.
-#aggregate <- sum(get_median_data())
-#cat(sprintf("Aggregate score is %.3f\n (s)", aggregate))
-
+aggregate <- sum(get_median_data())
+cat(sprintf("Aggregate score is %.3f (s)\n", aggregate))
 
 
 
