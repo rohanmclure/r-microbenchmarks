@@ -85,7 +85,17 @@ multiplication_bench <- function(size)
 	data <- sample(-100:100, size, replace=TRUE)
 	operand <- sample(-40:40, 1)
 
-	return(system.time(operand * data)[1])
+	total <- system.time(operand * data)[1]
+
+	for (i in 1:size)
+	{
+		a <- data[i]
+		b <- data[size+1-i]
+
+		total <- system.time(a * b)[i]
+	}
+
+	return(total)
 }
 
 # Enormous overhead!!!!
@@ -95,6 +105,8 @@ logic_bench <- function(size)
 	data <- data == 1
 
 	total <- 0.0
+
+	#	Inverts all items
 	total <- total + system.time(data <- !data)[1]
 
 
@@ -105,8 +117,8 @@ logic_bench <- function(size)
 		b <- data[(size+1)-i]
 		print(a)
 
-		total <- total + system.time(data[i] <- a && !b)[1]
-		total <- total + system.time(data[(size+1)-i] <- a || !b)[1]
+		total <- total + system.time(a && !b)[1]
+		total <- total + system.time(a || !b)[1]
 
 	}
 
@@ -115,7 +127,11 @@ logic_bench <- function(size)
 
 unsorted_linear_search <- function(size)
 {
+	# Creates a single 'TRUE' value in list.
+	data <- rep(FALSE,size)
+	data[sample(1:size,1)] <- TRUE
 
+	return(system.time(for (i in data) {if(i){break}}))[1]
 }
 
 #
@@ -158,13 +174,13 @@ list("matrix_arithmetic_bench",2750),
 list("incrementation_bench",5000000*8:23),
 list("matrix_multiplication_bench",1825),
 list("divisibility_bench",1000000*8:16),
-list("barplot_bench", 2400000))
+list("barplot_bench", 2400000),
+list("unsorted_linear_search",100000000))
 
 	for (i in 1:length(tests))
 	{
 		name <- tests[[i]][[1]]
 		data <- tests[[i]][[2]]
-
 
 		# Prints the mean team for 10 samples of each benchmark.
 		# The data given is the central or 'median' size range as per Intel Control.
@@ -181,6 +197,6 @@ list("barplot_bench", 2400000))
 
 # Returun aggregate test data as the sum of all central values.
 #aggregate <- sum(get_median_data())
-#cat(sprintf("Aggregate score is %.3f (s)\n", aggregate))
+#cat(sprintf("Aggregate score is %.3fs \n", aggregate))
 
-benchmark(logic_bench, 200, 10)
+benchmark("multiplication_bench",10,10)
