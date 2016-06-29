@@ -88,11 +88,35 @@ multiplication_bench <- function(size)
 	return(system.time(operand * data)[1])
 }
 
-#logic_bench <- function(size)
-#{
-#	data <- (sample(0:1, size,replace=TRUE) %% 2)
-#
-#}
+# Enormous overhead!!!!
+logic_bench <- function(size)
+{
+	data <- sample(0:1, size,replace=TRUE)
+	data <- data == 1
+
+	total <- 0.0
+	total <- total + system.time(data <- !data)[1]
+
+
+	# Loops through members, refers to ith and -ith members
+	for (i in 1:size)
+	{
+		a <- data[i]
+		b <- data[(size+1)-i]
+		print(a)
+
+		total <- total + system.time(data[i] <- a && !b)[1]
+		total <- total + system.time(data[(size+1)-i] <- a || !b)[1]
+
+	}
+
+	return(total)
+}
+
+unsorted_linear_search <- function(size)
+{
+
+}
 
 #
 #vector_column_synthesis_bench <- function(size)
@@ -156,8 +180,7 @@ list("barplot_bench", 2400000))
 
 
 # Returun aggregate test data as the sum of all central values.
-aggregate <- sum(get_median_data())
-cat(sprintf("Aggregate score is %.3f (s)\n", aggregate))
+#aggregate <- sum(get_median_data())
+#cat(sprintf("Aggregate score is %.3f (s)\n", aggregate))
 
-
-
+benchmark(logic_bench, 200, 10)
