@@ -85,7 +85,7 @@ divisibility_bench <- function(size)
 	for (n in 1:10)
 	{
 		moduli <- list_cycle(size)
-		total <- total + system.time(data %% moduli)
+		total <- total + system.time(data %% moduli)[1]
 	}
 
 	return(total)
@@ -152,7 +152,7 @@ unsorted_linear_search <- function(size)
 	data <- rep(FALSE,size)
 	data[sample(1:size,1)] <- TRUE
 
-	return(system.time(for (i in data) {if(i){break}}))[1]
+	return((system.time(for (i in data) {if(i){break}}))[1])
 }
 
 #
